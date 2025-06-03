@@ -1,30 +1,25 @@
 // ジェスチャーの種類
-// 👍(Thumb_Up), 👎(Thumb_Down), ✌️(Victory), 
-// ☝️(Pointng_Up), ✊(Closed_Fist), 👋(Open_Palm), 
-// 🤟(ILoveYou)
+// top, top_right, top_left, bottom, bottom_right, bottom_left, left, right
+// one, two, three, four, none
 function getCode(left_gesture, right_gesture) {
-  let code_array = {
-    "Thumb_Up": 1,
-    "Thumb_Down": 2,
-    "Victory": 3,
-    "Pointing_Up": 4,
-    "Closed_Fist": 5,
-    "Open_Palm": 6,
-  }
-  let left_code = code_array[left_gesture];
-  let right_code = code_array[right_gesture];
-  // left_codeとright_codeを文字として結合
-  let code = String(left_code) + String(right_code);
-  return code;
+  // ジェスチャー名をそのまま連結してユニークなコードにする
+  return `${left_gesture}_${right_gesture}`;
 }
 
 function getCharacter(code) {
+  // left_gesture_right_gesture の形でマッピング
   const codeToChar = {
-    "11": "a", "12": "b", "13": "c", "14": "d", "15": "e", "16": "f",
-    "21": "g", "22": "h", "23": "i", "24": "j", "25": "k", "26": "l",
-    "31": "m", "32": "n", "33": "o", "34": "p", "35": "q", "36": "r",
-    "41": "s", "42": "t", "43": "u", "44": "v", "45": "w", "46": "x",
-    "51": "y", "52": "z", "53": " ", "54": "backspace"
+    "bottom_bottom": "backspace", 
+    "top_one": "a","top_two": "b","top_three": "c",
+    "top_right_one": "d","top_right_two": "e","top_right_three": "f",
+    "left_one": "g","left_two": "h","left_three": "i",
+    "none_one": "j","none_two": "k","none_three": "l",
+    "right_one": "m","right_two": "n","right_three": "o",
+    "bottom_left_one": "p","bottom_left_two": "q","bottom_left_three": "r","bottom_left_four": "s",
+    "bottom_one": "t","bottom_two": "u","bottom_three": "v",
+    "bottom_right_one": "w","bottom_right_two": "x","bottom_right_three": "y","bottom_right_four": "z",
+    "top_top": " ", // スペース
+    // 必要に応じて他の組み合わせも追加
   };
   return codeToChar[code] || "";
 }
@@ -66,6 +61,7 @@ function setup() {
         // ゲーム開始前の状態から、カメラが起動した後の状態に変化した場合
         game_mode.previous = game_mode.now;
         game_mode.now = "playing";
+        game_start_time = millis(); // ゲーム開始時間を記録
         document.querySelector('input').value = ""; // 入力欄をクリア
         game_start_time = millis(); // ゲーム開始時間を記録
       }
@@ -82,15 +78,49 @@ function setup() {
       let c = getCharacter(code);
 
       let now = millis();
+      let threshold;
+      if (c === "backspace" || c === " ") {
+        threshold = 850; // 0.85秒
+      } else {
+        threshold = 700; 
+      }
       if (c === lastChar) {
-        if (now - lastCharTime > 1000) {
-          // 1秒以上cが同じ値である場合の処理
-          typeChar(c);
-          lastCharTime = now;
+        if (c === "backspace") {
+          // backspaceはthreshold経過時に連続入力可
+          if (now - lastCharTime > threshold) {
+            typeChar(c);
+            lastCharTime = now;
+          }
+        } else if (c === " ") {
+          // スペースは絶対に連続入力不可（直前がスペースのときは何もしない）
+          // 何もしない
+        } else {
+          // 削除・スペース以外は1.5秒以上同じジェスチャーが続いた場合のみ連続入力可
+          if (now - lastCharTime > 1500) {
+            typeChar(c);
+            lastCharTime = now;
+          }
         }
       } else {
-        lastChar = c;
-        lastCharTime = now;
+        // threshold経過時のみ新しい文字を入力許可
+        if (now - lastCharTime > threshold) {
+          // 新しい文字がスペースの場合、直前がスペースでなければ入力許可
+          if (c === " ") {
+            if (lastChar !== " ") {
+              typeChar(c);
+              lastChar = c;
+              lastCharTime = now;
+            } else {
+              // 直前がスペースなら何もしない
+            }
+          } else {
+            typeChar(c);
+            lastChar = c;
+            lastCharTime = now;
+          }
+        } else {
+          // 新しい文字だが、threshold未満ならlastCharは更新しない
+        }
       }
     }
 
@@ -139,8 +169,13 @@ function typeChar(c) {
   messageElem.innerHTML =
     `<span style="background-color:lightgreen">${matched}</span><span style="background-color:transparent">${unmatched}</span>`;
 
-
-
+  // 背景色警告処理
+  const body = document.body;
+  if (inputValue.length > 0 && inputValue !== target.slice(0, inputValue.length)) {
+    body.style.background = '#ffe5e5'; // 警告色（薄い赤）
+  } else {
+    body.style.background = '';
+  }
 
   // もしvalueの値がsample_texts[0]と同じになったら、[0]を削除して、次のサンプル文章に移行する。配列長が0になったらゲームを終了する
   if (document.querySelector('input').value == sample_texts[0]) {
@@ -159,7 +194,6 @@ function typeChar(c) {
       document.querySelector('#message').innerText = sample_texts[0];
     }
   }
-
 }
 
 
