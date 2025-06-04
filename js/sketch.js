@@ -80,7 +80,7 @@ function setup() {
       let now = millis();
       let threshold;
       if (c === "backspace" || c === " ") {
-        threshold = 850; // 0.85秒
+        threshold = 800; // 0.80秒
       } else {
         threshold = 700; 
       }
