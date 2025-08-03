@@ -71,6 +71,292 @@
             </div>
           </div>
 
+          <!-- エラー分析表示エリア -->
+          <div class="card mt-2" id="error-analysis-card" style="display: none;">
+            <div class="card-header">
+              <h6 class="card-title mb-0">エラー分析レポート</h6>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="text-center">
+                    <div class="h4 text-danger" id="block-errors">0</div>
+                    <small class="text-muted">ブロック選択エラー<br>（左手）</small>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="text-center">
+                    <div class="h4 text-warning" id="char-errors">0</div>
+                    <small class="text-muted">文字選択エラー<br>（右手）</small>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="text-center">
+                    <div class="h4 text-info" id="coord-errors">0</div>
+                    <small class="text-muted">協調エラー<br>（両手）</small>
+                  </div>
+                </div>
+              </div>
+              <div class="mt-3 text-center">
+                <small class="text-muted">
+                  総試行回数: <span id="total-attempts">0</span> | 
+                  総エラー率: <span id="total-error-rate">0</span>%
+                </small>
+              </div>
+            </div>
+          </div>
+
+          <!-- ユーザビリティ評価アンケート -->
+          <div class="card mt-2" id="usability-survey-card" style="display: none;">
+            <div class="card-header">
+              <h5 class="card-title mb-0">ユーザビリティ評価アンケート</h5>
+              <small class="text-muted">テストお疲れさまでした。以下の質問にお答えください。</small>
+            </div>
+            <div class="card-body">
+              <form id="usability-survey">
+                <!-- 学習と直感性について -->
+                <div class="mb-4">
+                  <h6 class="text-primary">【学習と直感性について】</h6>
+                  
+                  <div class="mb-3">
+                    <label class="form-label">1. 左右の手の役割分担（左手でブロック選択、右手でアルファベット選択）は、すぐに理解できましたか？</label>
+                    <div class="d-flex gap-3">
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="q1" value="1" id="q1_1">
+                        <label class="form-check-label" for="q1_1">1: 全くそう思わない</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="q1" value="2" id="q1_2">
+                        <label class="form-check-label" for="q1_2">2</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="q1" value="3" id="q1_3">
+                        <label class="form-check-label" for="q1_3">3</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="q1" value="4" id="q1_4">
+                        <label class="form-check-label" for="q1_4">4</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="q1" value="5" id="q1_5">
+                        <label class="form-check-label" for="q1_5">5: 非常にそう思う</label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label">2. 指で作る形（上下左右斜め、1〜4）は、覚えやすかったですか？</label>
+                    <div class="d-flex gap-3">
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="q2" value="1" id="q2_1">
+                        <label class="form-check-label" for="q2_1">1: 全くそう思わない</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="q2" value="2" id="q2_2">
+                        <label class="form-check-label" for="q2_2">2</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="q2" value="3" id="q2_3">
+                        <label class="form-check-label" for="q2_3">3</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="q2" value="4" id="q2_4">
+                        <label class="form-check-label" for="q2_4">4</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="q2" value="5" id="q2_5">
+                        <label class="form-check-label" for="q2_5">5: 非常にそう思う</label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label">3. この入力方法は、全体的に直感的だと感じましたか？</label>
+                    <div class="d-flex gap-3">
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="q3" value="1" id="q3_1">
+                        <label class="form-check-label" for="q3_1">1: 全くそう思わない</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="q3" value="2" id="q3_2">
+                        <label class="form-check-label" for="q3_2">2</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="q3" value="3" id="q3_3">
+                        <label class="form-check-label" for="q3_3">3</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="q3" value="4" id="q3_4">
+                        <label class="form-check-label" for="q3_4">4</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="q3" value="5" id="q3_5">
+                        <label class="form-check-label" for="q3_5">5: 非常にそう思う</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 操作の負担について -->
+                <div class="mb-4">
+                  <h6 class="text-primary">【操作の負担について】</h6>
+                  
+                  <div class="mb-3">
+                    <label class="form-label">4. この操作は、精神的にどれくらい疲れましたか？</label>
+                    <div class="d-flex gap-3">
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="q4" value="1" id="q4_1">
+                        <label class="form-check-label" for="q4_1">1: 全く疲れない</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="q4" value="2" id="q4_2">
+                        <label class="form-check-label" for="q4_2">2</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="q4" value="3" id="q4_3">
+                        <label class="form-check-label" for="q4_3">3</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="q4" value="4" id="q4_4">
+                        <label class="form-check-label" for="q4_4">4</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="q4" value="5" id="q4_5">
+                        <label class="form-check-label" for="q4_5">5: 非常に疲れる</label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label">5. この操作は、身体的に（腕や手が）どれくらい疲れましたか？</label>
+                    <div class="d-flex gap-3">
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="q5" value="1" id="q5_1">
+                        <label class="form-check-label" for="q5_1">1: 全く疲れない</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="q5" value="2" id="q5_2">
+                        <label class="form-check-label" for="q5_2">2</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="q5" value="3" id="q5_3">
+                        <label class="form-check-label" for="q5_3">3</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="q5" value="4" id="q5_4">
+                        <label class="form-check-label" for="q5_4">4</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="q5" value="5" id="q5_5">
+                        <label class="form-check-label" for="q5_5">5: 非常に疲れる</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 両手操作について -->
+                <div class="mb-4">
+                  <h6 class="text-primary">【両手操作について】</h6>
+                  
+                  <div class="mb-3">
+                    <label class="form-label">6. どちらの操作がより難しいと感じましたか？</label>
+                    <div class="d-flex flex-column gap-2">
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="q6" value="left" id="q6_left">
+                        <label class="form-check-label" for="q6_left">①左手のブロック選択</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="q6" value="right" id="q6_right">
+                        <label class="form-check-label" for="q6_right">②右手の文字決定</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="q6" value="same" id="q6_same">
+                        <label class="form-check-label" for="q6_same">③どちらも同じくらい</label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label">7. 操作中に、左右の手の役割を混同してしまうことは、どれくらいの頻度でありましたか？</label>
+                    <div class="d-flex gap-3">
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="q7" value="1" id="q7_1">
+                        <label class="form-check-label" for="q7_1">1: 全くなかった</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="q7" value="2" id="q7_2">
+                        <label class="form-check-label" for="q7_2">2</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="q7" value="3" id="q7_3">
+                        <label class="form-check-label" for="q7_3">3</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="q7" value="4" id="q7_4">
+                        <label class="form-check-label" for="q7_4">4</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="q7" value="5" id="q7_5">
+                        <label class="form-check-label" for="q7_5">5: 頻繁にあった</label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label">8. 両手を使った操作は、効率的でスピーディーだと感じましたか？</label>
+                    <div class="d-flex gap-3">
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="q8" value="1" id="q8_1">
+                        <label class="form-check-label" for="q8_1">1: 全くそう思わない</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="q8" value="2" id="q8_2">
+                        <label class="form-check-label" for="q8_2">2</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="q8" value="3" id="q8_3">
+                        <label class="form-check-label" for="q8_3">3</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="q8" value="4" id="q8_4">
+                        <label class="form-check-label" for="q8_4">4</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="q8" value="5" id="q8_5">
+                        <label class="form-check-label" for="q8_5">5: 非常にそう思う</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 自由記述 -->
+                <div class="mb-4">
+                  <h6 class="text-primary">【自由記述】</h6>
+                  
+                  <div class="mb-3">
+                    <label class="form-label">9. このシステムの最も良いと感じた点は何ですか？</label>
+                    <textarea class="form-control" name="q9" rows="3" placeholder="自由にお書きください"></textarea>
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label">10. このシステムで最も不満・不便だと感じた点は何ですか？</label>
+                    <textarea class="form-control" name="q10" rows="3" placeholder="自由にお書きください"></textarea>
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label">11. もし改善できるとしたら、どこをどのように改善したいですか？</label>
+                    <textarea class="form-control" name="q11" rows="3" placeholder="自由にお書きください"></textarea>
+                  </div>
+                </div>
+
+                <div class="text-center">
+                  <button type="button" class="btn btn-primary" onclick="submitSurvey()">アンケートを送信</button>
+                  <button type="button" class="btn btn-secondary ms-2" onclick="downloadSurveyResults()">結果をダウンロード</button>
+                </div>
+              </form>
+            </div>
+          </div>
+
         </div>
       </div>
 
@@ -136,6 +422,65 @@
         window.addEventListener('DOMContentLoaded', () => {
           highlightCellByChar('j');
         });
+
+        // アンケート機能
+        function submitSurvey() {
+          const formData = new FormData(document.getElementById('usability-survey'));
+          const surveyData = {};
+          
+          // フォームデータを収集
+          for (let [key, value] of formData.entries()) {
+            surveyData[key] = value;
+          }
+          
+          // タイムスタンプを追加
+          surveyData.timestamp = new Date().toISOString();
+          surveyData.sessionId = Date.now();
+          
+          // コンソールに結果を表示
+          console.log('=== ユーザビリティ評価アンケート結果 ===');
+          console.log(JSON.stringify(surveyData, null, 2));
+          
+          // ローカルストレージに保存
+          const existingData = JSON.parse(localStorage.getItem('gesture_typing_surveys') || '[]');
+          existingData.push(surveyData);
+          localStorage.setItem('gesture_typing_surveys', JSON.stringify(existingData));
+          
+          alert('アンケートの回答を保存しました。ご協力ありがとうございました！');
+          
+          // アンケートフォームを非表示
+          document.getElementById('usability-survey-card').style.display = 'none';
+        }
+
+        function downloadSurveyResults() {
+          // エラー分析データと合わせてダウンロード
+          const surveyData = JSON.parse(localStorage.getItem('gesture_typing_surveys') || '[]');
+          const formData = new FormData(document.getElementById('usability-survey'));
+          const currentSurvey = {};
+          
+          for (let [key, value] of formData.entries()) {
+            currentSurvey[key] = value;
+          }
+          
+          const combinedData = {
+            timestamp: new Date().toISOString(),
+            survey: currentSurvey,
+            errorAnalysis: window.getErrorAnalysisReport ? window.getErrorAnalysisReport() : {},
+            allSurveys: surveyData
+          };
+          
+          const dataStr = JSON.stringify(combinedData, null, 2);
+          const dataBlob = new Blob([dataStr], { type: 'application/json' });
+          const url = URL.createObjectURL(dataBlob);
+          
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = `gesture_typing_results_${Date.now()}.json`;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          URL.revokeObjectURL(url);
+        }
       </script>
 
   </body>
